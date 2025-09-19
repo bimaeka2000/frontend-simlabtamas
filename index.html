@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SIMLITABMAS CMS - Admin Dashboard</title>
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind config: brand palette
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#eef8ff',
+              100: '#d8efff',
+              200: '#b6e1ff',
+              300: '#86cdff',
+              400: '#4ab2ff',
+              500: '#1d93ff',
+              600: '#0d75e6',
+              700: '#0a5cbc',
+              800: '#0a4b97',
+              900: '#0a3f7d'
+            }
+          },
+          boxShadow: {
+            soft: '0 10px 30px rgba(13, 117, 230, 0.08)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Smooth scroll and focus styles */
+    html { scroll-behavior: smooth; }
+    :focus-visible { outline: 3px solid #1d93ff55; outline-offset: 3px; border-radius: 8px; }
+    /* Simple toast animation */
+    @keyframes toastSlide { from { transform: translateY(8px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-brand-50 via-white to-brand-100 min-h-screen text-slate-800">
+  <!-- App Wrapper -->
+  <div id="app" class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-72 bg-white/90 backdrop-blur border-r border-slate-200 hidden md:flex md:flex-col fixed md:static inset-y-0 z-40">
+      <div class="px-5 py-5 border-b border-slate-200">
+        <div class="flex items-center gap-3">
+          <!-- Simple brand SVG -->
+          <svg class="w-9 h-9 text-brand-600" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect x="4" y="6" width="40" height="36" rx="8" class="fill-brand-100"></rect>
+            <path d="M10 32c8-2 10-12 14-12s6 10 14 12" class="stroke-brand-600" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="16" cy="18" r="3" class="fill-brand-500"></circle>
+          </svg>
+          <div>
+            <div class="text-lg font-bold tracking-tight">SIMLITABMAS CMS</div>
+            <div class="text-xs text-slate-500">Admin Dashboard</div>
+          </div>
+        </div>
+        <button id="mobileClose" class="md:hidden mt-4 text-slate-500 hover:text-slate-700">Tutup</button>
+      </div>
+
+      <nav class="px-3 py-4 space-y-2 overflow-y-auto">
+        <button data-section="dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-brand-50 text-slate-700 font-medium">
+          <span class="w-2 h-2 rounded-full bg-brand-500"></span> Ringkasan
+        </button>
+        <div class="pt-2">
+          <div class="px-4 text-xs uppercase tracking-wider text-slate-400 mb-2">Konten</div>
+          <button data-section="berita" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            📰 Berita
+          </button>
+          <button data-section="pengumuman" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            📣 Pengumuman
+          </button>
+          <button data-section="kegiatan" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            📅 Kegiatan
+          </button>
+          <button data-section="penelitian" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            🔬 Penelitian
+          </button>
+          <button data-section="pengabdian" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            🤝 Pengabdian
+          </button>
+          <button data-section="dokumen" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            📁 Dokumen
+          </button>
+          <button data-section="halaman" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            📄 Halaman Statis
+          </button>
+          <button data-section="media" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            🖼️ Media
+          </button>
+        </div>
+
+        <div class="pt-4">
+          <div class="px-4 text-xs uppercase tracking-wider text-slate-400 mb-2">Sistem</div>
+          <button data-section="menu" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            🧭 Navigasi
+          </button>
+          <button data-section="user" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            👤 Pengguna & Peran
+          </button>
+          <button data-section="pengaturan" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-50">
+            ⚙️ Pengaturan Situs
+          </button>
+        </div>
+      </nav>
+
+      <div class="mt-auto p-4 border-t border-slate-200">
+        <button id="backupBtn" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-2.5 rounded-xl font-semibold shadow-soft">Backup Data</button>
+        <p class="text-[11px] text-slate-400 mt-2 text-center">Versi 1.0 • Lokal/Demo</p>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="flex-1 flex flex-col md:ml-0">
+      <!-- Topbar -->
+      <header class="bg-white/90 backdrop-blur border-b border-slate-200 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button id="mobileOpen" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl text-brand-700 bg-brand-100 hover:bg-brand-200">☰</button>
+            <h1 id="sectionTitle" class="text-lg sm:text-xl font-bold tracking-tight">Ringkasan</h1>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="relative hidden sm:block">
+              <input id="globalSearch" type="search" placeholder="Cari konten..." class="w-64 rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-2 focus:bg-white focus:border-brand-300" />
+              <span class="absolute right-3 top-2.5 text-slate-400">⌘K</span>
+            </div>
+            <button id="newBtn" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl font-semibold shadow-soft">+ Konten Baru</button>
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white grid place-content-center text-sm font-bold">AD</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <!-- Dashboard Overview -->
+        <section id="section-dashboard" class="section">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-soft">
+              <div class="text-slate-500 text-sm">Total Konten</div>
+              <div class="text-3xl font-extrabold mt-1" id="statTotal">0</div>
+              <div class="text-xs text-green-600 mt-2" id="statTrend">+0 hari ini</div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-soft">
+              <div class="text-slate-500 text-sm">Berita</div>
+              <div class="text-3xl font-extrabold mt-1" id="statBerita">0</div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-soft">
+              <div class="text-slate-500 text-sm">Pengumuman</div>
+              <div class="text-3xl font-extrabold mt-1" id="statPengumuman">0</div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-soft">
+              <div class="text-slate-500 text-sm">Kegiatan</div>
+              <div class="text-3xl font-extrabold mt-1" id="statKegiatan">0</div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft mt-6">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-bold">Aktivitas Terbaru</h2>
+              <div class="text-sm text-slate-500" id="lastBackup">Backup terakhir: -</div>
+            </div>
+            <ul id="activityLog" class="space-y-3">
+              <!-- Filled by JS -->
+            </ul>
+          </div>
+        </section>
+
+        <!-- Generic List Manager Template -->
+        <section id="section-berita" class="section hidden"></section>
+        <section id="section-pengumuman" class="section hidden"></section>
+        <section id="section-kegiatan" class="section hidden"></section>
+        <section id="section-penelitian" class="section hidden"></section>
+        <section id="section-pengabdian" class="section hidden"></section>
+        <section id="section-dokumen" class="section hidden"></section>
+        <section id="section-halaman" class="section hidden"></section>
+        <section id="section-media" class="section hidden"></section>
+
+        <!-- Navigasi Menu Builder -->
+        <section id="section-menu" class="section hidden">
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <h2 class="text-lg font-bold">Pengaturan Navigasi</h2>
+              <div class="flex items-center gap-2">
+                <input id="menuLabel" type="text" placeholder="Nama menu" class="rounded-xl border border-slate-200 px-3 py-2">
+                <input id="menuLink" type="text" placeholder="/tautan" class="rounded-xl border border-slate-200 px-3 py-2">
+                <button id="addMenuItem" class="bg-brand-600 hover:bg-brand-700 text-white px-3 py-2 rounded-xl font-semibold">+ Tambah</button>
+              </div>
+            </div>
+            <ul id="menuList" class="space-y-2">
+              <!-- Menu items injected -->
+            </ul>
+          </div>
+        </section>
+
+        <!-- User & Roles -->
+        <section id="section-user" class="section hidden">
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold">Pengguna</h2>
+                <button id="addUserBtn" class="bg-brand-600 hover:bg-brand-700 text-white px-3 py-2 rounded-xl font-semibold">+ Pengguna</button>
+              </div>
+              <ul id="userList" class="space-y-3"></ul>
+            </div>
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft">
+              <h2 class="text-lg font-bold mb-3">Peran & Hak Akses</h2>
+              <ul class="space-y-2" id="roleList"></ul>
+              <div class="mt-4 flex gap-2">
+                <input id="newRoleName" type="text" placeholder="Nama peran baru" class="rounded-xl border border-slate-200 px-3 py-2">
+                <button id="addRoleBtn" class="bg-brand-600 hover:bg-brand-700 text-white px-3 py-2 rounded-xl font-semibold">+ Peran</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Site Settings -->
+        <section id="section-pengaturan" class="section hidden">
+          <form id="settingsForm" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft space-y-5">
+            <h2 class="text-lg font-bold">Pengaturan Situs</h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm text-slate-600 mb-1">Nama Situs</label>
+                <input name="siteName" type="text" class="w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="SIMLITABMAS">
+              </div>
+              <div>
+                <label class="block text-sm text-slate-600 mb-1">Email Kontak</label>
+                <input name="contactEmail" type="email" class="w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="admin@simlitabmas.ac.id">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-sm text-slate-600 mb-1">Deskripsi Singkat</label>
+                <textarea name="siteDesc" rows="3" class="w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="Deskripsi singkat situs..."></textarea>
+              </div>
+              <div>
+                <label class="block text-sm text-slate-600 mb-1">Tema Warna</label>
+                <select name="theme" class="w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option value="default">Biru (Default)</option>
+                  <option value="emerald">Hijau Emerald</option>
+                  <option value="rose">Merah Rose</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm text-slate-600 mb-1">Mode</label>
+                <select name="mode" class="w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option value="light">Terang</option>
+                  <option value="dark">Gelap</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl font-semibold">Simpan</button>
+              <span class="text-sm text-slate-500">Perubahan disimpan di peramban (demo).</span>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal (Create/Edit Content) -->
+  <div id="modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-soft border border-slate-200 overflow-hidden">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200">
+        <h3 id="modalTitle" class="text-lg font-bold">Konten Baru</h3>
+        <button id="modalClose" class="text-slate-500 hover:text-slate-700">✕</button>
+      </div>
+      <form id="contentForm" class="p-5 space-y-4">
+        <input type="hidden" name="collection" />
+        <input type="hidden" name="id" />
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm text-slate-600 mb-1">Judul</label>
+            <input name="title" required type="text" class="w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="Judul konten">
+          </div>
+          <div>
+            <label class="block text-sm text-slate-600 mb-1">Status</label>
+            <select name="status" class="w-full rounded-xl border border-slate-200 px-3 py-2">
+              <option value="draft">Draft</option>
+              <option value="published">Terbit</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm text-slate-600 mb-1">Tanggal</label>
+            <input name="date" type="date" class="w-full rounded-xl border border-slate-200 px-3 py-2">
+          </div>
+          <div>
+            <label class="block text-sm text-slate-600 mb-1">Penulis</label>
+            <input name="author" type="text" class="w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="Nama penulis">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm text-slate-600 mb-1">Ringkasan</label>
+          <textarea name="summary" rows="2" class="w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="Ringkasan singkat..."></textarea>
+        </div>
+        <div>
+          <label class="block text-sm text-slate-600 mb-1">Konten</label>
+          <textarea name="content" rows="6" class="w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="Tulis konten di sini..."></textarea>
+        </div>
+        <div class="flex items-center justify-between pt-2">
+          <div class="text-xs text-slate-500">Semua data disimpan di penyimpanan peramban (demo). Integrasi server belum didukung oleh Canva Code.</div>
+          <div class="flex gap-2">
+            <button type="button" id="deleteBtn" class="hidden bg-rose-50 text-rose-700 hover:bg-rose-100 px-4 py-2 rounded-xl font-semibold">Hapus</button>
+            <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl font-semibold">Simpan</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-4 right-4 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl hidden" style="animation: toastSlide .2s ease-out"></div>
+
+  <script>
+    // ============== Simple Local Storage "DB" (Demo) ==============
+    // Peraturan: Semua data hanya disimpan di localStorage (DEMO).
+    // Untuk produksi, sambungkan ke backend API Anda (tidak didukung di Canva Code).
+    const DB_KEY = 'simlitabmas_cms';
+    const initialData = {
+      berita: [
+        {id: cryptoId(), title: 'Kegiatan Penelitian Unggulan', status:'published', date: today(-2), author:'Admin', summary:'Highlight hasil riset terbaru.', content:'Konten lengkap...'},
+      ],
+      pengumuman: [
+        {id: cryptoId(), title: 'Batas Akhir Pengajuan Proposal', status:'published', date: today(3), author:'Operator', summary:'Pengajuan ditutup minggu depan.', content:'Detail persyaratan...'},
+      ],
+      kegiatan: [],
+      penelitian: [],
+      pengabdian: [],
+      dokumen: [],
+      halaman: [
+        {id: cryptoId(), title:'Tentang SIMLITABMAS', status:'published', date: today(0), author:'Admin', summary:'Profil singkat', content:'Halaman statis...'}
+      ],
+      media: [],
+      menu: [
+        {id: cryptoId(), label:'Beranda', link:'/'},
+        {id: cryptoId(), label:'Berita', link:'/berita'},
+        {id: cryptoId(), label:'Pengumuman', link:'/pengumuman'},
+      ],
+      users: [
+        {id: cryptoId(), name:'Administrator', email:'admin@simlitabmas.ac.id', role:'Admin'},
+      ],
+      roles: ['Admin','Editor','Viewer'],
+      settings: { siteName:'SIMLITABMAS', contactEmail:'admin@simlitabmas.ac.id', siteDesc:'Sistem Informasi Penelitian & Pengabdian', theme:'default', mode:'light' },
+      activity: []
+    };
+
+    function cryptoId(){ return 'id-' + Math.random().toString(36).slice(2,9) }
+    function today(offset=0){ const d=new Date(); d.setDate(d.getDate()+offset); return d.toISOString().substring(0,10) }
+
+    function loadDB(){
+      const raw = localStorage.getItem(DB_KEY);
+      if(!raw){ localStorage.setItem(DB_KEY, JSON.stringify(initialData)); return structuredClone(initialData); }
+      try { return JSON.parse(raw); } catch { localStorage.setItem(DB_KEY, JSON.stringify(initialData)); return structuredClone(initialData); }
+    }
+    function saveDB(db){ localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+
+    let db = loadDB();
+
+    // ============== Navigation & Sections ==============
+    const sectionMap = {
+      dashboard:'Ringkasan',
+      berita:'Berita',
+      pengumuman:'Pengumuman',
+      kegiatan:'Kegiatan',
+      penelitian:'Penelitian',
+      pengabdian:'Pengabdian',
+      dokumen:'Dokumen',
+      halaman:'Halaman Statis',
+      media:'Media',
+      menu:'Navigasi',
+      user:'Pengguna & Peran',
+      pengaturan:'Pengaturan Situs'
+    };
+
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.section');
+    const sectionTitle = document.getElementById('sectionTitle');
+    const newBtn = document.getElementById('newBtn');
+
+    let activeSection = 'dashboard';
+
+    navBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const target = btn.getAttribute('data-section');
+        switchSection(target);
+        if (window.innerWidth < 768){ toggleSidebar(false); }
+      });
+    });
+
+    function switchSection(key){
+      activeSection = key;
+      sectionTitle.textContent = sectionMap[key] || 'Dashboard';
+      sections.forEach(s=>s.classList.add('hidden'));
+      document.getElementById('section-'+key).classList.remove('hidden');
+      highlightNav(key);
+      // Refresh views
+      if(key==='dashboard'){ renderStats(); renderActivity(); }
+      if(contentCollections.includes(key)){ ensureListUI(key); renderCollection(key); }
+      if(key==='menu'){ renderMenu(); }
+      if(key==='user'){ renderUsers(); renderRoles(); }
+      if(key==='pengaturan'){ loadSettingsForm(); }
+    }
+
+    function highlightNav(key){
+      document.querySelectorAll('.nav-btn').forEach(b=>{
+        const active = b.getAttribute('data-section')===key;
+        b.classList.toggle('bg-brand-600', active);
+        b.classList.toggle('text-white', active);
+        b.classList.toggle('font-semibold', active);
+      });
+    }
+
+    // ============== Sidebar Mobile ==============
+    const sidebar = document.getElementById('sidebar');
+    const mobileOpen = document.getElementById('mobileOpen');
+    const mobileClose = document.getElementById('mobileClose');
+    function toggleSidebar(show){
+      if(show){ sidebar.classList.remove('hidden'); } else { sidebar.classList.add('hidden'); }
+    }
+    mobileOpen?.addEventListener('click', ()=> toggleSidebar(true));
+    mobileClose?.addEventListener('click', ()=> toggleSidebar(false));
+
+    // ============== Collections (CRUD) ==============
+    const contentCollections = ['berita','pengumuman','kegiatan','penelitian','pengabdian','dokumen','halaman','media'];
+
+    function ensureListUI(col){
+      const container = document.getElementById('section-'+col);
+      if(container.dataset.built) return;
+      container.dataset.built = '1';
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h2 class="text-lg font-bold">${sectionMap[col]}</h2>
+            <div class="flex items-center gap-2">
+              <input type="text" placeholder="Cari ${sectionMap[col].toLowerCase()}..." class="list-search rounded-xl border border-slate-200 px-3 py-2">
+              <select class="list-filter rounded-xl border border-slate-200 px-3 py-2">
+                <option value="all">Semua Status</option>
+                <option value="published">Terbit</option>
+                <option value="draft">Draft</option>
+              </select>
+              <button class="add-item bg-brand-600 hover:bg-brand-700 text-white px-3 py-2 rounded-xl font-semibold">+ Tambah</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="text-slate-500 text-sm">
+                  <th class="py-2">Judul</th>
+                  <th class="py-2">Tanggal</th>
+                  <th class="py-2">Status</th>
+                  <th class="py-2">Penulis</th>
+                  <th class="py-2 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody class="list-body"></tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      container.querySelector('.add-item').addEventListener('click', ()=> openModal(col));
+      container.querySelector('.list-search').addEventListener('input', ()=> renderCollection(col));
+      container.querySelector('.list-filter').addEventListener('change', ()=> renderCollection(col));
+    }
+
+    function renderCollection(col){
+      const container = document.getElementById('section-'+col);
+      const tbody = container.querySelector('.list-body');
+      const q = container.querySelector('.list-search').value.toLowerCase();
+      const f = container.querySelector('.list-filter').value;
+
+      const items = (db[col]||[]).filter(it=>{
+        const matchQ = !q || it.title.toLowerCase().includes(q) || (it.summary||'').toLowerCase().includes(q);
+        const matchF = f==='all' || it.status===f;
+        return matchQ && matchF;
+      });
+
+      // Selective render: reuse rows by id
+      const existingRows = {};
+      tbody.querySelectorAll('tr[data-id]').forEach(tr=> existingRows[tr.dataset.id] = tr);
+
+      const used = new Set();
+      items.forEach(it=>{
+        let tr = existingRows[it.id];
+        if(!tr){
+          tr = document.createElement('tr');
+          tr.dataset.id = it.id;
+          tr.innerHTML = `
+            <td class="py-3 pr-3">
+              <div class="font-semibold">${escapeHtml(it.title)}</div>
+              <div class="text-xs text-slate-500">${escapeHtml(it.summary||'')}</div>
+            </td>
+            <td class="py-3">${it.date||'-'}</td>
+            <td class="py-3">
+              <span class="inline-flex items-center px-2 py-1 rounded-lg text-xs font-semibold ${it.status==='published'?'bg-green-50 text-green-700':'bg-slate-100 text-slate-700'}">
+                ${it.status==='published'?'Terbit':'Draft'}
+              </span>
+            </td>
+            <td class="py-3">${escapeHtml(it.author||'-')}</td>
+            <td class="py-3 text-right">
+              <button class="edit px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200">Ubah</button>
+              <button class="dup px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200">Duplikat</button>
+              <button class="del px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100">Hapus</button>
+            </td>
+          `;
+          // Actions
+          tr.querySelector('.edit').addEventListener('click', ()=> openModal(col, it));
+          tr.querySelector('.dup').addEventListener('click', ()=> duplicateItem(col, it));
+          tr.querySelector('.del').addEventListener('click', ()=> deleteItem(col, it.id));
+          tbody.appendChild(tr);
+        } else {
+          // Update in place
+          tr.querySelector('td:first-child .font-semibold').textContent = it.title;
+          const sumEl = tr.querySelector('td:first-child .text-xs');
+          sumEl.textContent = it.summary || '';
+          tr.children[1].textContent = it.date||'-';
+          const badge = tr.children[2].querySelector('span');
+          badge.textContent = it.status==='published'?'Terbit':'Draft';
+          badge.className = 'inline-flex items-center px-2 py-1 rounded-lg text-xs font-semibold ' + (it.status==='published'?'bg-green-50 text-green-700':'bg-slate-100 text-slate-700');
+          tr.children[3].textContent = it.author||'-';
+        }
+        used.add(it.id);
+      });
+
+      // Remove rows not used
+      Object.keys(existingRows).forEach(id=>{
+        if(!used.has(id)) existingRows[id].remove();
+      });
+
+      // Update stats on each render
+      renderStats();
+    }
+
+    function openModal(col, data=null){
+      const modal = document.getElementById('modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('modalTitle').textContent = data ? 'Ubah ' + sectionMap[col] : 'Konten Baru ' + sectionMap[col];
+      const form = document.getElementById('contentForm');
+      form.collection.value = col;
+      form.id.value = data ? data.id : '';
+      form.title.value = data ? data.title : '';
+      form.status.value = data ? data.status : 'draft';
+      form.date.value = data ? (data.date||'') : today(0);
+      form.author.value = data ? (data.author||'') : 'Admin';
+      form.summary.value = data ? (data.summary||'') : '';
+      form.content.value = data ? (data.content||'') : '';
+      document.getElementById('deleteBtn').classList.toggle('hidden', !data);
+    }
+
+    function closeModal(){ const m = document.getElementById('modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modal').addEventListener('click', (e)=>{ if(e.target.id==='modal') closeModal(); });
+
+    document.getElementById('contentForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const f = e.target;
+      const col = f.collection.value;
+      const id = f.id.value || cryptoId();
+      const record = {
+        id,
+        title: f.title.value.trim(),
+        status: f.status.value,
+        date: f.date.value,
+        author: f.author.value.trim(),
+        summary: f.summary.value.trim(),
+        content: f.content.value.trim()
+      };
+      if(!record.title){ showToast('Judul wajib diisi'); return; }
+
+      const idx = (db[col]||[]).findIndex(x=>x.id===id);
+      if(idx>=0){ db[col][idx] = record; logActivity('Ubah', sectionMap[col], record.title); }
+      else { db[col] = db[col]||[]; db[col].unshift(record); logActivity('Tambah', sectionMap[col], record.title); }
+
+      saveDB(db);
+      renderCollection(col);
+      showToast('Tersimpan');
+      closeModal();
+    });
+
+    document.getElementById('deleteBtn').addEventListener('click', ()=>{
+      const f = document.getElementById('contentForm');
+      const col = f.collection.value;
+      const id = f.id.value;
+      deleteItem(col, id, true);
+      closeModal();
+    });
+
+    function deleteItem(col, id, silent=false){
+      db[col] = (db[col]||[]).filter(x=>x.id!==id);
+      saveDB(db);
+      renderCollection(col);
+      if(!silent) showToast('Dihapus');
+      const itemTitle = '(item)';
+      logActivity('Hapus', sectionMap[col], itemTitle);
+    }
+
+    function duplicateItem(col, it){
+      const copy = {...it, id: cryptoId(), title: it.title + ' (Salinan)', date: today(0), status:'draft'};
+      db[col].unshift(copy);
+      saveDB(db);
+      renderCollection(col);
+      showToast('Duplikat dibuat');
+      logActivity('Duplikat', sectionMap[col], it.title);
+    }
+
+    // Global "Konten Baru" button opens modal for current collection if applicable
+    newBtn.addEventListener('click', ()=>{
+      if(contentCollections.includes(activeSection)){ openModal(activeSection); }
+      else { showToast('Pilih menu konten untuk menambah data'); }
+    });
+
+    // ============== Dashboard Stats & Activity ==============
+    function renderStats(){
+      const totals = contentCollections.reduce((acc,col)=>{
+        acc[col] = (db[col]||[]).length;
+        acc.total += acc[col];
+        return acc;
+      }, {total:0});
+      document.getElementById('statTotal').textContent = totals.total;
+      document.getElementById('statBerita').textContent = (db.berita||[]).length;
+      document.getElementById('statPengumuman').textContent = (db.pengumuman||[]).length;
+      document.getElementById('statKegiatan').textContent = (db.kegiatan||[]).length;
+      document.getElementById('statTrend').textContent = '+' + Math.floor(Math.random()*3) + ' hari ini';
+    }
+
+    function logActivity(action, type, title){
+      const entry = { id: cryptoId(), time: new Date().toLocaleString(), action, type, title };
+      db.activity.unshift(entry);
+      db.activity = db.activity.slice(0, 20);
+      saveDB(db);
+      renderActivity();
+    }
+
+    function renderActivity(){
+      const ul = document.getElementById('activityLog');
+      ul.innerHTML = '';
+      (db.activity||[]).forEach(a=>{
+        const li = document.createElement('li');
+        li.className = 'flex items-start justify-between p-3 rounded-xl border border-slate-200';
+        li.innerHTML = `
+          <div>
+            <div class="font-semibold">${a.action} • ${a.type}</div>
+            <div class="text-sm text-slate-600">${escapeHtml(a.title||'-')}</div>
+          </div>
+          <div class="text-xs text-slate-500">${a.time}</div>
+        `;
+        ul.appendChild(li);
+      });
+    }
+
+    // ============== Menu Builder ==============
+    const menuLabel = document.getElementById('menuLabel');
+    const menuLink = document.getElementById('menuLink');
+    const addMenuItem = document.getElementById('addMenuItem');
+    const menuList = document.getElementById('menuList');
+
+    addMenuItem.addEventListener('click', ()=>{
+      const label = menuLabel.value.trim();
+      const link = menuLink.value.trim();
+      if(!label || !link) return showToast('Lengkapi nama & tautan');
+      db.menu.unshift({id: cryptoId(), label, link});
+      saveDB(db);
+      menuLabel.value=''; menuLink.value='';
+      renderMenu();
+      logActivity('Tambah','Navigasi',label);
+      showToast('Menu ditambahkan');
+    });
+
+    function renderMenu(){
+      menuList.innerHTML = '';
+      (db.menu||[]).forEach(item=>{
+        const li = document.createElement('li');
+        li.className = 'flex items-center justify-between p-3 rounded-xl border border-slate-200';
+        li.innerHTML = `
+          <div class="flex-1">
+            <div class="font-semibold">${escapeHtml(item.label)}</div>
+            <div class="text-xs text-slate-500">${escapeHtml(item.link)}</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="move-up px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200">Naik</button>
+            <button class="move-down px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200">Turun</button>
+            <button class="edit px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200">Ubah</button>
+            <button class="del px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100">Hapus</button>
+          </div>
+        `;
+        li.querySelector('.move-up').addEventListener('click', ()=> moveMenu(item.id, -1));
+        li.querySelector('.move-down').addEventListener('click', ()=> moveMenu(item.id, 1));
+        li.querySelector('.edit').addEventListener('click', ()=>{
+          const nl = prompt('Nama menu', item.label);
+          if(nl===null) return;
+          const lk = prompt('Tautan', item.link);
+          if(lk===null) return;
+          item.label = nl.trim(); item.link = lk.trim();
+          saveDB(db); renderMenu(); logActivity('Ubah','Navigasi',item.label);
+        });
+        li.querySelector('.del').addEventListener('click', ()=>{
+          db.menu = db.menu.filter(x=>x.id!==item.id);
+          saveDB(db); renderMenu(); logActivity('Hapus','Navigasi',item.label);
+        });
+        menuList.appendChild(li);
+      });
+    }
+
+    function moveMenu(id, dir){
+      const i = db.menu.findIndex(x=>x.id===id);
+      const j = i + dir;
+      if(i<0 || j<0 || j>=db.menu.length) return;
+      const [it] = db.menu.splice(i,1);
+      db.menu.splice(j,0,it);
+      saveDB(db);
+      renderMenu();
+    }
+
+    // ============== Users & Roles (Demo) ==============
+    const userList = document.getElementById('userList');
+    const addUserBtn = document.getElementById('addUserBtn');
+    const roleList = document.getElementById('roleList');
+    const addRoleBtn = document.getElementById('addRoleBtn');
+    const newRoleName = document.getElementById('newRoleName');
+
+    function renderUsers(){
+      userList.innerHTML = '';
+      (db.users||[]).forEach(u=>{
+        const li = document.createElement('li');
+        li.className = 'flex items-center justify-between p-3 rounded-xl border border-slate-200';
+        li.innerHTML = `
+          <div>
+            <div class="font-semibold">${escapeHtml(u.name)}</div>
+            <div class="text-xs text-slate-500">${escapeHtml(u.email)} • ${escapeHtml(u.role)}</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="edit px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200">Ubah</button>
+            <button class="del px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100">Hapus</button>
+          </div>
+        `;
+        li.querySelector('.edit').addEventListener('click', ()=>{
+          const nn = prompt('Nama', u.name); if(nn===null) return;
+          const ne = prompt('Email', u.email); if(ne===null) return;
+          const nr = prompt('Peran (Admin/Editor/Viewer)', u.role); if(nr===null) return;
+          u.name = nn.trim(); u.email = ne.trim(); u.role = nr.trim();
+          saveDB(db); renderUsers(); logActivity('Ubah','Pengguna',u.name);
+        });
+        li.querySelector('.del').addEventListener('click', ()=>{
+          db.users = db.users.filter(x=>x.id!==u.id);
+          saveDB(db); renderUsers(); logActivity('Hapus','Pengguna',u.name);
+        });
+        userList.appendChild(li);
+      });
+    }
+
+    addUserBtn.addEventListener('click', ()=>{
+      const name = prompt('Nama pengguna'); if(!name) return;
+      const email = prompt('Email'); if(!email) return;
+      const role = prompt('Peran (Admin/Editor/Viewer)','Editor') || 'Editor';
+      db.users.unshift({id: cryptoId(), name:name.trim(), email:email.trim(), role:role.trim()});
+      saveDB(db); renderUsers(); logActivity('Tambah','Pengguna',name);
+    });
+
+    function renderRoles(){
+      roleList.innerHTML = '';
+      (db.roles||[]).forEach(r=>{
+        const li = document.createElement('li');
+        li.className = 'flex items-center justify-between p-2 rounded-lg border border-slate-200';
+        li.innerHTML = `
+          <div class="font-medium">${escapeHtml(r)}</div>
+          <button class="del px-3 py-1 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100">Hapus</button>
+        `;
+        li.querySelector('.del').addEventListener('click', ()=>{
+          db.roles = db.roles.filter(x=>x!==r);
+          saveDB(db); renderRoles(); logActivity('Hapus','Peran',r);
+        });
+        roleList.appendChild(li);
+      });
+    }
+
+    addRoleBtn.addEventListener('click', ()=>{
+      const r = newRoleName.value.trim();
+      if(!r) return showToast('Nama peran kosong');
+      if(db.roles.includes(r)) return showToast('Peran sudah ada');
+      db.roles.push(r);
+      newRoleName.value='';
+      saveDB(db); renderRoles(); logActivity('Tambah','Peran',r);
+    });
+
+    // ============== Settings ==============
+    function loadSettingsForm(){
+      const f = document.getElementById('settingsForm');
+      const s = db.settings || {};
+      f.siteName.value = s.siteName||'';
+      f.contactEmail.value = s.contactEmail||'';
+      f.siteDesc.value = s.siteDesc||'';
+      f.theme.value = s.theme||'default';
+      f.mode.value = s.mode||'light';
+    }
+
+    document.getElementById('settingsForm').addEventListener('submit',(e)=>{
+      e.preventDefault();
+      const f = e.target;
+      db.settings = {
+        siteName: f.siteName.value.trim(),
+        contactEmail: f.contactEmail.value.trim(),
+        siteDesc: f.siteDesc.value.trim(),
+        theme: f.theme.value,
+        mode: f.mode.value
+      };
+      saveDB(db);
+      applyTheme();
+      logActivity('Simpan','Pengaturan', db.settings.siteName);
+      showToast('Pengaturan disimpan');
+    });
+
+    function applyTheme(){
+      // Simple theme demo: switch accent via CSS variables would be ideal; here we just toggle body classes
+      const mode = db.settings?.mode || 'light';
+      document.body.classList.toggle('bg-slate-900', mode==='dark');
+      document.body.classList.toggle('text-white', mode==='dark');
+    }
+
+    // ============== Global Search (⌘K) ==============
+    const globalSearch = document.getElementById('globalSearch');
+    globalSearch.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){
+        const q = globalSearch.value.trim().toLowerCase();
+        if(!q){ showToast('Masukkan kata kunci'); return; }
+        // Search across collections
+        const hits = [];
+        contentCollections.forEach(col=>{
+          (db[col]||[]).forEach(it=>{
+            const hay = (it.title+' '+(it.summary||'')+' '+(it.content||'')).toLowerCase();
+            if(hay.includes(q)) hits.push({col, it});
+          });
+        });
+        if(hits.length){
+          const first = hits[0];
+          switchSection(first.col);
+          // prefill search box
+          const container = document.getElementById('section-'+first.col);
+          container.querySelector('.list-search').value = globalSearch.value;
+          renderCollection(first.col);
+          showToast('Ditemukan '+hits.length+' hasil pada beberapa konten');
+        } else {
+          showToast('Tidak ada hasil');
+        }
+      }
+    });
+
+    // Shortcut ⌘K / Ctrl+K
+    window.addEventListener('keydown',(e)=>{
+      if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){
+        e.preventDefault();
+        globalSearch.focus();
+      }
+    });
+
+    // ============== Backup (Demo JSON download) ==============
+    document.getElementById('backupBtn').addEventListener('click', ()=>{
+      const blob = new Blob([JSON.stringify(db, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'simlitabmas-backup-'+new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')+'.json';
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(url);
+      a.remove();
+      showToast('Backup diunduh');
+      document.getElementById('lastBackup').textContent = 'Backup terakhir: ' + new Date().toLocaleString();
+      logActivity('Backup','Sistem','Unduh berkas');
+    });
+
+    // ============== Utilities ==============
+    function showToast(msg){
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.remove('hidden');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(()=> t.classList.add('hidden'), 2200);
+    }
+
+    function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])) }
+
+    // ============== Init ==============
+    function init(){
+      applyTheme();
+      switchSection('dashboard');
+      renderStats();
+      renderActivity();
+    }
+    init();
+
+    // Disclosures for limitations:
+    // - Semua tindakan bersifat demo (tanpa server). Email, login, dan kredensial tidak dibuat di sini.
+    // - Untuk unggah media asli tidak dibuat; Anda bisa menambah entri media sebagai catatan saja.
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97e4349534304489',t:'MTc1NzczMDQ0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
