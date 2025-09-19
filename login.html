@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Form Login - Style Replica</title>
+  <style>
+    :root{
+      --bg:#fdeff0;        /* pale pink background */
+      --accent:#1977ff;    /* blue frame & button */
+      --accent-dark:#125dc1;
+      --card-white:#ffffff;
+      --muted:#6b6b6b;
+      --shadow-lg: 0 18px 40px rgba(0,0,0,0.18);
+      --shadow-soft: 0 10px 30px rgba(0,0,0,0.12);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .page {
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 20px;
+    }
+
+    /* Outer framed card */
+    .frame {
+      position:relative;
+      width:520px;
+      max-width:92vw;
+      padding:22px; /* outer blue thickness effect */
+      border-radius:20px;
+      background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+      box-shadow: var(--shadow-lg);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    /* White inner card */
+    .inner {
+      width:100%;
+      background:var(--card-white);
+      border-radius:12px;
+      padding:28px 36px;
+      box-shadow: var(--shadow-soft);
+      border: 4px solid rgba(0,0,0,0.06);
+    }
+
+    /* Top pill label */
+    .label-pill{
+      position:absolute;
+      top:-32px;
+      left:50%;
+      transform:translateX(-50%);
+      background:linear-gradient(180deg,#fff,#f7fbff);
+      padding:10px 36px;
+      border-radius:999px;
+      border: 3px solid rgba(25,119,255,0.18);
+      box-shadow: 0 8px 18px rgba(25,119,255,0.12);
+      font-weight:600;
+      color:#0b2340;
+      letter-spacing:0.2px;
+      font-size:16px;
+    }
+
+    .form-group{
+      margin-bottom:20px;
+    }
+
+    .input-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:#fff;
+      border-radius:22px;
+      padding:10px 14px;
+      border:2px solid rgba(0,0,0,0.15);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.6);
+    }
+
+    .input-wrap svg.icon{
+      width:22px;height:22px;flex:0 0 22px;
+    }
+
+    input[type="text"], input[type="password"]{
+      border:0;
+      outline:0;
+      font-size:16px;
+      flex:1;
+      padding:6px 4px;
+      background:transparent;
+      color:#111;
+      font-weight:500;
+    }
+
+    /* password eye button */
+    .eye-btn{
+      border:0;
+      background:transparent;
+      cursor:pointer;
+      padding:6px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 34px;
+    }
+
+    /* bottom row: forgot + login */
+    .bottom-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:14px;
+      gap:16px;
+    }
+
+    .forgot{
+      color:var(--muted);
+      text-decoration:underline;
+      font-size:14px;
+    }
+
+    .btn-login{
+      background:var(--accent);
+      border-radius:14px;
+      padding:10px 26px;
+      color:white;
+      font-weight:600;
+      border:4px solid rgba(0,0,0,0.07);
+      box-shadow: 0 10px 20px rgba(25,119,255,0.18);
+      cursor:pointer;
+      transition:transform .12s ease, box-shadow .12s ease;
+      min-width:110px;
+      text-align:center;
+    }
+    .btn-login:active{ transform:translateY(1px); }
+    .btn-login:hover{ box-shadow: 0 14px 30px rgba(25,119,255,0.22); }
+
+    /* subtle form inner spacing that matches image */
+    .inner .field {
+      background:transparent;
+      margin:14px 0;
+    }
+
+    /* small responsive tweaks */
+    @media (max-width:420px){
+      .frame{ padding:16px; }
+      .inner{ padding:20px; }
+      .label-pill{ padding:8px 20px; font-size:14px; top:-26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="frame" role="region" aria-label="Login form frame">
+      <div class="label-pill">Form Login</div>
+
+      <div class="inner">
+        <!-- username -->
+        <div class="form-group">
+          <label class="sr-only" for="username">Username</label>
+          <div class="input-wrap">
+            <!-- user icon -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="1" y="1" width="22" height="22" rx="5" stroke="#111" stroke-width="1.4" fill="none"></rect>
+              <path d="M12 11.2a3 3 0 100-6 3 3 0 000 6zM4 20.2c0-2.8 2.6-4.6 8-4.6s8 1.8 8 4.6" stroke="#111" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+
+            <input id="username" type="text" placeholder="Username" autocomplete="username" />
+          </div>
+        </div>
+
+        <!-- password -->
+        <div class="form-group">
+          <label class="sr-only" for="password">Password</label>
+          <div class="input-wrap">
+            <!-- lock icon -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="1.5" y="8" width="21" height="13" rx="3" stroke="#111" stroke-width="1.3" fill="none"></rect>
+              <path d="M8.5 8V6a3.5 3.5 0 017 0v2" stroke="#111" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+            <input id="password" type="password" placeholder="Password" autocomplete="current-password" />
+            <button class="eye-btn" id="toggleEye" aria-label="Toggle password visibility" type="button" title="Tampilkan / sembunyikan">
+              <!-- eye icon (closed by default) -->
+              <svg id="eyeOpen" viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="#111" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" stroke="#111" stroke-width="1.3" fill="none"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- bottom row: forgot + login -->
+        <div class="bottom-row">
+          <a class="forgot" href="#" tabindex="0">Forgot Password?</a>
+          <button class="btn-login" type="button">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility (simple)
+    (function(){
+      const pwd = document.getElementById('password');
+      const toggle = document.getElementById('toggleEye');
+
+      toggle.addEventListener('click', () => {
+        if (pwd.type === 'password') {
+          pwd.type = 'text';
+        } else {
+          pwd.type = 'password';
+        }
+      });
+
+      // minor accessibility: Enter on forgot link does nothing here (demo)
+    })();
+  </script>
+</body>
+</html>

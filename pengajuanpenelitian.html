@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pengajuan Penelitian</title>
+  <style>
+    :root{
+      --bg:#fdeff0;
+      --accent:#1977ff;
+      --card:#fff;
+      --shadow:0 10px 22px rgba(0,0,0,0.15);
+      font-family: "Inter", Arial, sans-serif;
+    }
+
+    body{
+      margin:0;
+      background:var(--bg);
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:100vh;
+      padding:40px 10px;
+    }
+
+    .frame{
+      background:var(--accent);
+      padding:32px;
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      width:900px;
+      max-width:95vw;
+      position:relative;
+    }
+
+    .label-pill{
+      position:absolute;
+      top:-20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#fff;
+      padding:8px 36px;
+      border-radius:999px;
+      font-weight:600;
+      border:2px solid rgba(0,0,0,0.1);
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .inner{
+      background:var(--card);
+      border-radius:10px;
+      padding:24px;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+
+    .box{
+      border:2px solid #000;
+      border-radius:10px;
+      padding:16px;
+    }
+
+    .box-title{
+      font-weight:600;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .input-wrap{
+      display:flex;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .input-wrap input{
+      flex:1;
+      padding:8px 10px;
+      border-radius:8px;
+      border:1.5px solid #999;
+      outline:none;
+    }
+
+    /* Personalia list */
+    .personalia-list{
+      border:2px solid #000;
+      border-radius:10px;
+      padding:16px;
+    }
+    .personalia-list > div{
+      margin-bottom:14px;
+    }
+    .personalia-list label{
+      font-weight:600;
+      display:block;
+      margin-bottom:6px;
+    }
+    .personalia-list input{
+      display:block;
+      width:100%;
+      margin-bottom:6px;
+      padding:8px 10px;
+      border-radius:8px;
+      border:1.5px solid #999;
+      outline:none;
+    }
+
+    @media(max-width:768px){
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="label-pill">Pengajuan Penelitian</div>
+    <div class="inner">
+      <div class="grid-2">
+        <!-- Data Diri -->
+        <div class="box">
+          <div class="box-title">👤 Data Diri</div>
+          <div class="input-wrap"><input type="text" placeholder="Nama"></div>
+          <div class="input-wrap"><input type="text" placeholder="NIDN"></div>
+          <div class="input-wrap"><input type="text" placeholder="Nama Program"></div>
+        </div>
+
+        <!-- Mitra Program -->
+        <div class="box">
+          <div class="box-title">📄 Mitra Program</div>
+          <div class="input-wrap"><input type="text" placeholder="Nama"></div>
+          <div class="input-wrap"><input type="email" placeholder="Email"></div>
+          <div class="input-wrap"><input type="tel" placeholder="No. Telp"></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Personalia Program -->
+        <div class="box">
+          <div class="box-title">👥 Personalia Program</div>
+          <div class="input-wrap"><input type="text" placeholder="Nama"></div>
+          <div class="input-wrap"><input type="email" placeholder="Email"></div>
+          <div class="input-wrap"><input type="tel" placeholder="No. Telp"></div>
+        </div>
+
+        <!-- Kegiatan -->
+        <div class="box">
+          <div class="box-title">⏱️ Kegiatan</div>
+          <div class="input-wrap"><input type="text" placeholder="Lama Kegiatan"></div>
+          <div class="input-wrap"><input type="text" placeholder="Biaya Kegiatan"></div>
+          <div class="input-wrap"><input type="text" placeholder="Tahun Akademik"></div>
+        </div>
+      </div>
+
+      <!-- Personalia Program List -->
+      <div class="personalia-list">
+        <div>
+          <label>Nama</label>
+          <input type="text" placeholder="Nama">
+          <input type="text" placeholder="Nama">
+          <input type="text" placeholder="Nama">
+          <input type="text" placeholder="Nama">
+        </div>
+        <div>
+          <label>Email</label>
+          <input type="email" placeholder="Email">
+          <input type="email" placeholder="Email">
+          <input type="email" placeholder="Email">
+          <input type="email" placeholder="Email">
+        </div>
+        <div>
+          <label>No. Telp</label>
+          <input type="tel" placeholder="No. Telp">
+          <input type="tel" placeholder="No. Telp">
+          <input type="tel" placeholder="No. Telp">
+          <input type="tel" placeholder="No. Telp">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
