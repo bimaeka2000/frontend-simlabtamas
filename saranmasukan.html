@@ -1,127 +1,137 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Form Saran & Masukan</title>
-  <style>
-    :root{
-      --bg:#fdeff0;      /* background pink muda */
-      --accent:#1977ff;  /* warna biru utama */
-      --accent-dark:#125dc1;
-      --card-white:#ffffff;
-      --shadow-lg: 0 16px 36px rgba(0,0,0,0.15);
-      --shadow-sm: 0 8px 18px rgba(0,0,0,0.1);
-      font-family: "Inter", Arial, sans-serif;
-    }
-
-    body{
-      margin:0;
-      background:var(--bg);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height:100vh;
-    }
-
-    .form-frame{
-      position:relative;
-      background:var(--accent);
-      padding:28px;
-      border-radius:14px;
-      box-shadow: var(--shadow-lg);
-      width:800px;
-      max-width:94vw;
-    }
-
-    /* pill di atas */
-    .label-pill{
-      position:absolute;
-      top:-22px;
-      left:50%;
-      transform:translateX(-50%);
-      background:#fff;
-      padding:8px 36px;
-      border-radius:999px;
-      font-weight:600;
-      border:2px solid rgba(0,0,0,0.1);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .form-inner{
-      background:#fff;
-      border-radius:10px;
-      padding:24px;
-      display:grid;
-      grid-template-columns:1fr 1.3fr;
-      gap:20px;
-    }
-
-    .section-title{
-      font-weight:600;
-      text-align:center;
-      margin-bottom:14px;
-    }
-
-    .data-diri, .saran{
-      background:#fff;
-      border-radius:10px;
-      padding:16px;
-    }
-
-    .data-diri{
-      background:var(--accent);
-      color:#fff;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .data-diri input{
-      width:100%;
-      margin-bottom:14px;
-      padding:10px 12px;
-      border:0;
-      border-radius:8px;
-      font-size:15px;
-      outline:none;
-      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.2);
-    }
-
-    .saran textarea{
-      width:100%;
-      min-height:160px;
-      resize:vertical;
-      padding:10px 12px;
-      border:2px solid var(--accent);
-      border-radius:8px;
-      font-size:15px;
-      outline:none;
-    }
-
-    @media(max-width:700px){
-      .form-inner{
-        grid-template-columns:1fr;
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Form Saran & Masukan</title>
+    <style>
+      :root {
+        --bg: #fdeff0; /* background pink muda */
+        --accent: #1977ff; /* warna biru utama */
+        --accent-dark: #125dc1;
+        --card-white: #ffffff;
+        --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.15);
+        --shadow-sm: 0 8px 18px rgba(0, 0, 0, 0.1);
+        font-family: "Inter", Arial, sans-serif;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="form-frame">
-    <div class="label-pill">Saran & Masukan</div>
-    <div class="form-inner">
-      <!-- Kolom kiri -->
-      <div class="data-diri">
-        <div class="section-title">Data Diri</div>
-        <input type="text" placeholder="Nama" />
-        <input type="email" placeholder="Email" />
-        <input type="tel" placeholder="No. Telp" />
-      </div>
 
-      <!-- Kolom kanan -->
-      <div class="saran">
-        <div class="section-title">Saran & Masukan</div>
-        <textarea placeholder="Isi Saran & Masukan...."></textarea>
+      body {
+        margin: 0;
+        background: var(--bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .form-frame {
+        position: relative;
+        background: var(--accent);
+        padding: 28px;
+        border-radius: 14px;
+        box-shadow: var(--shadow-lg);
+        width: 800px;
+        max-width: 94vw;
+      }
+
+      /* pill di atas */
+      .label-pill {
+        position: absolute;
+        top: -22px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        padding: 8px 36px;
+        border-radius: 999px;
+        font-weight: 600;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .form-inner {
+        background: #fff;
+        border-radius: 10px;
+        padding: 24px;
+        display: grid;
+        grid-template-columns: 1fr 1.3fr;
+        gap: 20px;
+      }
+
+      .section-title {
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 14px;
+      }
+
+      .data-diri,
+      .saran {
+        background: #fff;
+        border-radius: 10px;
+        padding: 16px;
+      }
+
+      .data-diri {
+        background: var(--accent);
+        color: #fff;
+        box-shadow: var(--shadow-sm);
+        height: 193px;
+        margin-top: 50px;
+        width: 334px;
+      }
+
+      .data-diri input {
+        width: 100%;
+        margin-bottom: 14px;
+        padding: 10px 0.5% 10px 1px;
+        border: 0;
+        border-radius: 8px;
+        font-size: 15px;
+        outline: none;
+        box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .data-diri ::placeholder {
+        color: #444;
+        opacity: 0.8;
+        padding-left: 10px;
+      }
+
+      .saran textarea {
+        width: 95%;
+        min-height: 190px;
+        resize: vertical;
+        padding: 10px 12px;
+        border: 7px solid var(--accent);
+        border-radius: 8px;
+        font-size: 15px;
+        outline: none;
+      }
+
+      @media (max-width: 700px) {
+        .form-inner {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-frame">
+      <div class="label-pill">Saran & Masukan</div>
+      <div class="form-inner">
+        <!-- Kolom kiri -->
+        <div class="data-diri">
+          <div class="section-title">Data Diri</div>
+          <input type="text" placeholder="Nama" />
+          <input type="email" placeholder="Email" />
+          <input type="tel" placeholder="No. Telp" />
+        </div>
+
+        <!-- Kolom kanan -->
+        <div class="saran">
+          <div class="section-title">Saran & Masukan</div>
+          <textarea placeholder="Isi Saran & Masukan...."></textarea>
+        </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

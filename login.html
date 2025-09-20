@@ -57,6 +57,7 @@
       padding:28px 36px;
       box-shadow: var(--shadow-soft);
       border: 4px solid rgba(0,0,0,0.06);
+      box-sizing:border-box;
     }
 
     /* Top pill label */
@@ -155,6 +156,13 @@
       margin:14px 0;
     }
 
+    /* sr-only class styling */
+    .sr-only {
+      padding-left: 25px;
+      font-size: 14px;
+
+    }
+
     /* small responsive tweaks */
     @media (max-width:420px){
       .frame{ padding:16px; }
@@ -171,7 +179,7 @@
       <div class="inner">
         <!-- username -->
         <div class="form-group">
-          <label class="sr-only" for="username">Username</label>
+          <label class="sr-only " for="username">Username</label>
           <div class="input-wrap">
             <!-- user icon -->
             <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
